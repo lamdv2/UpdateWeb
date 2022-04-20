@@ -147,17 +147,34 @@
                                 </tr>
                                 <?php 
                                     require("connet.php");
-                                    $sqlll = "select * from cart";
+
+                                    $idUser = $_SESSION['id'];
+
+                                    $sqlll = "select * from cart where id= $idUser";
                                     $resulttt = mysqli_query($conn , $sqlll);
                                     $phigiaohang = 20000;
                                     $tong =0;
-                                    // $rowww = mysqli_fetch_assoc($resulttt);
                                     while($rowww = mysqli_fetch_assoc($resulttt))
                                     {
                                         $gia = (int)$rowww["gia"];
                                         $tamtinh = $gia*$rowww["quantity"];
                                         $tong += (int)$tamtinh;
-                                        
+
+                                        $idProduct = $rowww["idProduct"];
+                                    
+                                        $sql = "select * from product where idProduct = $idProduct";
+                                        $result = mysqli_query($conn , $sql);
+                                        $row = mysqli_fetch_assoc($result);
+
+                                        $tenSp = $row['tenSp'];
+                                        $gia = $row['gia'];
+                                        $giaSale = $row['giaSale'];
+                                        $hang = $row['hang'];
+                                        $loaiSP = $row['loaiSP'];
+                                        $quantity = $row['quantity'];
+                                        $img = $row['imgProduct'];
+                                        $property = $row['property'];
+
                                 ?>
 
                                 <tr class="cartList ">
@@ -167,19 +184,19 @@
                                             
                                         </div>
                                         <div class="cart-items-img cart_body">
-                                            <img src="<?php echo './assets/img/' . $rowww["imgProduct"]?>" alt="" class="cart-items-img">
+                                            <img src="<?php echo './assets/img/' . $row["imgProduct"]?>" alt="" class="cart-items-img">
                                         </div>
                                         <div class="cart-items-name cart_body">
-                                            <span><?php   echo $rowww["tenSp"]?></span>
+                                            <span><?php   echo $row["tenSp"]?></span>
                                         </div>
                                     </td>
                                     <td class="cart_body " style="font-weight: 600; text-align: center;">
-                                        <span><?php   echo $rowww["gia"]?><sup>đ</sup></span>
+                                        <span><?php   echo $row["gia"]?><sup>đ</sup></span>
                                     </td>
                                     <td class="num" style="font-weight: 600; text-align: center;">
                                         <div class="quantity-product">
                                             <input type="button" value="-" class="tru">
-                                            <input type="number" name="154" id="" class="value-quantity" value="<?php   echo $rowww["quantity"]?>">
+                                            <input type="number" name="154" id="" class="value-quantity" value="<?php   echo $row["quantity"]?>">
                                             <input type="button" value="+" class="cong" onclick="subTotal()">
                                         </div>
                                     </td>
